@@ -2,6 +2,14 @@ import styled from "styled-components";
 import { up } from "styled-breakpoints";
 import MoBerriesLogo from "../assets/MoBerriesLogo";
 
+export default function Header() {
+	return (
+		<StyledHeader>
+			<MoBerriesLogo style={{ maxHeight: "76px" }} />
+		</StyledHeader>
+	);
+}
+
 const StyledHeader = styled.div`
 	width: 100%;
 	height: 136px;
@@ -21,11 +29,3 @@ const StyledHeader = styled.div`
 		padding: 45px 165px;
 	}
 `;
-
-export default function Header() {
-	return (
-		<StyledHeader>
-			<MoBerriesLogo style={{maxHeight: "76px"}} />
-		</StyledHeader>
-	);
-}
