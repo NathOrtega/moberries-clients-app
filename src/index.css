@@ -5,3 +5,7 @@
 	font-family: "Segoe UI", sans-serif;
 	background-color: rgba(1, 2, 4, 0);
 }
+
+.overflow-hidden {
+	overflow: hidden;
+}

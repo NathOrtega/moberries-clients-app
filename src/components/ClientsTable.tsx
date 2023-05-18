@@ -129,6 +129,7 @@ const TableRow = styled.tr`
 const StyledButton = styled.button`
 	border: none;
 	margin: 20px 5px 0;
+	cursor: pointer;
 
 	${up("md")} {
 		margin: 0 5px;
