@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import { up } from "styled-breakpoints";
 
 interface ModalProps {
 	isOpen: boolean;
@@ -10,7 +11,7 @@ interface ModalProps {
 }
 
 interface StyledModalContainerProps {
-	readonly isOpen?: boolean;
+	readonly $isOpen: boolean;
 }
 
 export default function Modal({
@@ -28,7 +29,7 @@ export default function Modal({
 	}, [isOpen]);
 
 	return ReactDOM.createPortal(
-		<StyledModalContainer isOpen={isOpen}>
+		<StyledModalContainer $isOpen={isOpen}>
 			<StyledOverlay onClick={() => setIsOpen(false)} />
 			<StyledModal>{children}</StyledModal>
 		</StyledModalContainer>,
@@ -37,7 +38,7 @@ export default function Modal({
 }
 
 const StyledModalContainer = styled.div<StyledModalContainerProps>`
-	display: ${(props) => (props.isOpen ? "block" : "none")};
+	display: ${(props) => (props.$isOpen ? "block" : "none")};
 `;
 
 const StyledOverlay = styled.div`
@@ -50,11 +51,23 @@ const StyledOverlay = styled.div`
 `;
 const StyledModal = styled.div`
 	width: 350px;
-	height: 217px;
+	height: fit-content;
 	background-color: #ffffff;
 	position: fixed;
-	top: 35%;
+	top: 20%;
 	left: 50%;
 	transform: translateX(-50%);
 	border-radius: 6px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	${up("md")} {
+		top: 12%;
+	}
+
+	${up("lg")} {
+		top: 25%;
+	}
 `;

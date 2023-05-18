@@ -5,27 +5,36 @@ import { IconTrash } from "@tabler/icons-react";
 import { up } from "styled-breakpoints";
 import Modal from "./Modal";
 import React from "react";
+import ClientForm from "./ClientForm";
 
 interface ClientsTableProps {
 	users: Array<User>;
 }
 
 interface TableDataProps {
-	readonly hasIcons?: boolean;
-	readonly width?: string;
+	readonly $hasIcons?: boolean;
+	readonly $width?: string;
 }
 
 export default function ClientsTable({ users }: ClientsTableProps) {
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+	const handleOnSave = () => {
+		console.log("Saved!");
+	};
+
+	const handleOnCancel = () => {
+		setIsModalOpen(false);
+	};
 
 	return (
 		<>
 			<StyledTable>
 				<StyledTableHead>
 					<TableRow>
-						<StyledTableHeader width="150px">Name</StyledTableHeader>
-						<StyledTableHeader width="150px">Date Of Birth</StyledTableHeader>
-						<StyledTableHeader width="250px">Email</StyledTableHeader>
+						<StyledTableHeader $width="150px">Name</StyledTableHeader>
+						<StyledTableHeader $width="150px">Date Of Birth</StyledTableHeader>
+						<StyledTableHeader $width="250px">Email</StyledTableHeader>
 						<StyledTableHeader>Status</StyledTableHeader>
 						<StyledTableHeader>Actions</StyledTableHeader>
 					</TableRow>
@@ -45,7 +54,7 @@ export default function ClientsTable({ users }: ClientsTableProps) {
 							<StyledTableData>
 								<Label>Status</Label> {user.status}
 							</StyledTableData>
-							<StyledTableData hasIcons>
+							<StyledTableData $hasIcons>
 								<StyledButton onClick={() => setIsModalOpen(true)}>
 									<IconEdit />
 								</StyledButton>
@@ -57,8 +66,12 @@ export default function ClientsTable({ users }: ClientsTableProps) {
 					))}
 				</tbody>
 			</StyledTable>
-			<Modal containerElementId="modal" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-				<div>Hello Modal!</div>
+			<Modal
+				containerElementId="modal"
+				isOpen={isModalOpen}
+				setIsOpen={setIsModalOpen}
+			>
+				<ClientForm onSave={handleOnSave} onCancel={handleOnCancel} />
 			</Modal>
 		</>
 	);
@@ -66,17 +79,17 @@ export default function ClientsTable({ users }: ClientsTableProps) {
 
 const StyledTableData = styled.td<TableDataProps>`
 	width: 350px;
-	margin: ${(props) => (props.hasIcons ? "0" : "5px 0")};
+	margin: ${(props) => (props.$hasIcons ? "0" : "5px 0")};
 	font-size: 16px;
 	display: flex;
 	flex-direction: row;
 	justify-content: ${(props) =>
-		props.hasIcons ? "flex-end" : "space-between"};
+		props.$hasIcons ? "flex-end" : "space-between"};
 
 	${up("md")} {
 		width: ${(props) => (props.width ? props.width : "100px")};
 		justify-content: ${(props) =>
-			props.hasIcons ? "flex-start" : "space-between"};
+			props.$hasIcons ? "flex-start" : "space-between"};
 	}
 `;
 
@@ -84,7 +97,7 @@ const StyledTableHeader = styled.th<TableDataProps>`
 	font-size: 16px;
 
 	${up("md")} {
-		width: ${(props) => (props.width ? props.width : "100px")};
+		width: ${(props) => (props.$width ? props.$width : "100px")};
 		text-align: start;
 	}
 `;
