@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import ClientsTable from "./components/ClientsTable";
 import { User } from "./types/User";
+import Navbar from "./components/Navbar";
 
 const exampleUsers: Array<User> = [
 	{
@@ -27,6 +28,7 @@ function App() {
 	return (
 		<>
 			<Header />
+			<Navbar />
 			<ClientsTable users={exampleUsers} />
 		</>
 	);

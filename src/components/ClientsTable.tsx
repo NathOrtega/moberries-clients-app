@@ -113,14 +113,14 @@ const Label = styled.span`
 
 const StyledTable = styled.table`
 	width: 350px;
-	margin: 20px auto;
+	margin: 0px auto 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 
 	${up("md")} {
 		width: 764px;
-		margin: 50px auto;
+		margin: 30px auto 50px;
 		flex-direction: column;
 	}
 `;
