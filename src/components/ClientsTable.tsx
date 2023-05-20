@@ -37,7 +37,7 @@ export default function ClientsTable({
 
 	const onSave = (client: Client) => {
 		handleOnEdit(client);
-		onCancel()
+		onCancel();
 	};
 
 	const onCancel = () => {

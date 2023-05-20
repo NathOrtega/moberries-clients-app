@@ -30,7 +30,7 @@ export default function Modal({
 				<StyledOverlay onClick={onClose} />
 				<StyledModal>{children}</StyledModal>
 			</>
-			),
+		),
 		document.getElementById(containerElementId) as HTMLElement
 	);
 }

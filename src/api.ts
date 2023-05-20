@@ -34,7 +34,7 @@ export const getClients = (): Client[] => {
 }
 
 export const addClient = (client: clientWithoutId) => {
-  const newClient = {...client, id: UUID()}
+  const newClient = { ...client, id: UUID() }
   const clients = getClients()
   const updatedClients = clients.concat(newClient)
   localStorage.setItem("clients", JSON.stringify(updatedClients))

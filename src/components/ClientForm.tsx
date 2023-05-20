@@ -41,10 +41,10 @@ export default function ClientForm({
 			name: "",
 			email: "",
 			dateOfBirth: "",
-			status: "Pending"
-		})
-		onCancel()
-	}
+			status: "Pending",
+		});
+		onCancel();
+	};
 
 	return (
 		<form>

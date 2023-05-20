@@ -21,7 +21,7 @@ function App() {
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
 
 	const reload = () => {
-		const response = getClients()
+		const response = getClients();
 		setClients(response);
 		setFilteredClients(response);
 	};
@@ -31,10 +31,10 @@ function App() {
 	}, []);
 
 	const handleOnCreate = (client: clientWithoutId) => {
-		addClient(client)
-		setIsModalOpen(false)
-		reload()
-	}
+		addClient(client);
+		setIsModalOpen(false);
+		reload();
+	};
 
 	const handleOnEdit = (client: Client) => {
 		editClient(client);
@@ -46,26 +46,30 @@ function App() {
 		reload();
 	};
 
-	const handleOnFilter = React.useCallback(({ email, statusFilter }: HandleOnFilterArgs) => {
-		const filteredClients = clients.filter((client) => {
-			const emailMatches =
-				email === ""
-					? true
-					: client.email.toLowerCase().includes(email.toLowerCase());
+	const handleOnFilter = React.useCallback(
+		({ email, statusFilter }: HandleOnFilterArgs) => {
+			const filteredClients = clients.filter((client) => {
+				const emailMatches =
+					email === ""
+						? true
+						: client.email.toLowerCase().includes(email.toLowerCase());
 
-			const statusMatches = statusFilter === "All" ? true : client.status === statusFilter;
+				const statusMatches =
+					statusFilter === "All" ? true : client.status === statusFilter;
 
-			return emailMatches && statusMatches;
-		});
-		setFilteredClients(filteredClients);
-	}, [clients]);
+				return emailMatches && statusMatches;
+			});
+			setFilteredClients(filteredClients);
+		},
+		[clients]
+	);
 
 	const handleOnSort = React.useCallback(() => {
 		const sortedClients = [...filteredClients].sort((clientA, clientB) => {
-			return clientA.name.localeCompare(clientB.name)
-		})
-		setFilteredClients(sortedClients)
-	}, [filteredClients])
+			return clientA.name.localeCompare(clientB.name);
+		});
+		setFilteredClients(sortedClients);
+	}, [filteredClients]);
 
 	return (
 		<>
@@ -75,13 +79,17 @@ function App() {
 					Create
 				</StyledButton>
 			</ButtonContainer>
-			<Filters onFilter={handleOnFilter} onSort={handleOnSort}/>
+			<Filters onFilter={handleOnFilter} onSort={handleOnSort} />
 			<ClientsTable
 				clients={filteredClients}
 				handleOnEdit={handleOnEdit}
 				handleOnRemove={handleOnRemove}
 			/>
-			<Modal containerElementId="modal" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+			<Modal
+				containerElementId="modal"
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+			>
 				<ClientForm
 					onSave={handleOnCreate}
 					onCancel={() => setIsModalOpen(false)}
@@ -94,7 +102,7 @@ function App() {
 const StyledButton = styled(Button)`
 	width: 100px;
 	background-color: #dd1843;
-`
+`;
 
 const ButtonContainer = styled.div`
 	width: 350px;
@@ -107,6 +115,6 @@ const ButtonContainer = styled.div`
 		width: 764px;
 		margin: 30px auto 0;
 	}
-`
+`;
 
 export default App;
