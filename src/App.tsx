@@ -1,35 +1,36 @@
 import Header from "./components/Header";
 import ClientsTable from "./components/ClientsTable";
-import { User } from "./types/User";
 import Navbar from "./components/Navbar";
-
-const exampleUsers: Array<User> = [
-	{
-		name: "Alina",
-		dateOfBirth: "16.04.1958",
-		email: "alina@email.com",
-		status: "Active",
-	},
-	{
-		name: "Benedict",
-		dateOfBirth: "23.05.1968",
-		email: "benedict@email.com",
-		status: "Pending",
-	},
-	{
-		name: "Charlotte",
-		dateOfBirth: "03.11.1998",
-		email: "charlotte@email.com",
-		status: "Blocked",
-	},
-];
+import { editClient, getClients, removeClient } from "./api";
+import { Client, Clients } from "./types/Client";
+import React from "react";
 
 function App() {
+	const [clients, setClients] = React.useState<Clients>([])
+
+	const reload = () => {
+		setClients(getClients())
+	}
+
+	React.useEffect(() => {
+		reload()
+	}, [])
+
+	const handleOnEdit = (client: Client) => {
+		editClient(client)
+		reload()
+	}
+
+	const handleOnRemove = (client: Client) => {
+		removeClient(client)
+		reload()
+	}
+
 	return (
 		<>
 			<Header />
 			<Navbar />
-			<ClientsTable users={exampleUsers} />
+			<ClientsTable clients={clients} handleOnEdit={handleOnEdit} handleOnRemove={handleOnRemove}/>
 		</>
 	);
 }

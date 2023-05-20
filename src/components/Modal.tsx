@@ -5,9 +5,9 @@ import { up } from "styled-breakpoints";
 
 interface ModalProps {
 	isOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	children: React.ReactNode;
 	containerElementId: string;
+	onClose: () => void;
 }
 
 interface StyledModalContainerProps {
@@ -18,7 +18,7 @@ export default function Modal({
 	children,
 	containerElementId,
 	isOpen,
-	setIsOpen,
+	onClose,
 }: ModalProps) {
 	React.useEffect(() => {
 		if (isOpen) {
@@ -30,7 +30,7 @@ export default function Modal({
 
 	return ReactDOM.createPortal(
 		<StyledModalContainer $isOpen={isOpen}>
-			<StyledOverlay onClick={() => setIsOpen(false)} />
+			<StyledOverlay onClick={onClose} />
 			<StyledModal>{children}</StyledModal>
 		</StyledModalContainer>,
 		document.getElementById(containerElementId) as HTMLElement

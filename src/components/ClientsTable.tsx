@@ -1,4 +1,4 @@
-import { User } from "../types/User";
+import { Client, Clients } from "../types/Client";
 import { styled } from "styled-components";
 import { IconEdit } from "@tabler/icons-react";
 import { IconTrash } from "@tabler/icons-react";
@@ -8,7 +8,10 @@ import React from "react";
 import ClientForm from "./ClientForm";
 
 interface ClientsTableProps {
-	users: Array<User>;
+	clients: Clients;
+	handleOnAdd?: (client: Client) => void;
+	handleOnEdit: (client: Client) => void;
+	handleOnRemove: (client: Client) => void;
 }
 
 interface TableDataProps {
@@ -16,14 +19,29 @@ interface TableDataProps {
 	readonly $width?: string;
 }
 
-export default function ClientsTable({ users }: ClientsTableProps) {
+export default function ClientsTable({
+	clients,
+	handleOnEdit,
+	handleOnRemove,
+}: ClientsTableProps) {
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const [currentClient, setCurrentClient] = React.useState<Client>();
 
-	const handleOnSave = () => {
-		console.log("Saved!");
+	React.useEffect(() => {
+		if (currentClient?.id) setIsModalOpen(true);
+	}, [currentClient?.id]);
+
+	const onEdit = (client: Client) => {
+		setCurrentClient(client);
 	};
 
-	const handleOnCancel = () => {
+	const onSave = (client: Client) => {
+		handleOnEdit(client);
+		onCancel()
+	};
+
+	const onCancel = () => {
+		setCurrentClient(undefined);
 		setIsModalOpen(false);
 	};
 
@@ -40,25 +58,25 @@ export default function ClientsTable({ users }: ClientsTableProps) {
 					</TableRow>
 				</StyledTableHead>
 				<tbody style={{ width: "100%" }}>
-					{users.map((user, index) => (
+					{clients.map((client, index) => (
 						<TableRow key={index}>
 							<StyledTableData width="150px">
-								<Label>Name</Label> {user.name}
+								<Label>Name</Label> {client.name}
 							</StyledTableData>
 							<StyledTableData width="150px">
-								<Label>Date of Birth</Label> {user.dateOfBirth}
+								<Label>Date of Birth</Label> {client.dateOfBirth}
 							</StyledTableData>
 							<StyledTableData width="250px">
-								<Label>Email</Label> {user.email}
+								<Label>Email</Label> {client.email}
 							</StyledTableData>
 							<StyledTableData>
-								<Label>Status</Label> {user.status}
+								<Label>Status</Label> {client.status}
 							</StyledTableData>
 							<StyledTableData $hasIcons>
-								<StyledButton onClick={() => setIsModalOpen(true)}>
+								<StyledButton onClick={() => onEdit(client)}>
 									<IconEdit />
 								</StyledButton>
-								<StyledButton>
+								<StyledButton onClick={() => handleOnRemove(client)}>
 									<IconTrash />
 								</StyledButton>
 							</StyledTableData>
@@ -66,12 +84,16 @@ export default function ClientsTable({ users }: ClientsTableProps) {
 					))}
 				</tbody>
 			</StyledTable>
-			<Modal
-				containerElementId="modal"
-				isOpen={isModalOpen}
-				setIsOpen={setIsModalOpen}
-			>
-				<ClientForm onSave={handleOnSave} onCancel={handleOnCancel} />
+			<Modal containerElementId="modal" isOpen={isModalOpen} onClose={onCancel}>
+				{currentClient && (
+					<ClientForm
+						client={currentClient}
+						onSave={(partialClient) =>
+							onSave({ id: currentClient.id, ...partialClient })
+						}
+						onCancel={onCancel}
+					/>
+				)}
 			</Modal>
 		</>
 	);

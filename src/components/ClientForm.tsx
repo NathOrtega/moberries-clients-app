@@ -1,36 +1,88 @@
 import { styled } from "styled-components";
 import Button from "./Button";
+import { Client, clientWithoutId } from "../types/Client";
+import React from "react";
 
 interface ClientFormProps {
-	onSave: () => void;
+	client?: Client;
+	onSave: (partialClient: clientWithoutId) => void;
 	onCancel: () => void;
 }
 
-export default function ClientForm({ onSave, onCancel }: ClientFormProps) {
+export default function ClientForm({
+	client,
+	onSave,
+	onCancel,
+}: ClientFormProps) {
+	const [updatedClient, setUpdatedClient] = React.useState<clientWithoutId>({
+		name: client?.name || "",
+		email: client?.email || "",
+		dateOfBirth: client?.dateOfBirth || "",
+		status: client?.status || "Pending",
+	});
+
+	const handleOnSave = () => {
+		onSave(updatedClient);
+	};
+
+	const handleOnChange = (
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLSelectElement>
+	) => {
+		setUpdatedClient({
+			...updatedClient,
+			[e.target.name]: e.target.value,
+		});
+	};
+
 	return (
 		<form>
 			<label>
 				<StyledLabel>Name</StyledLabel>
-				<StyledInput type="text" />
+				<StyledInput
+					type="text"
+					value={updatedClient.name}
+					onChange={handleOnChange}
+					name="name"
+				/>
 			</label>
 			<label>
 				<StyledLabel>Email</StyledLabel>
-				<StyledInput type="email" />
+				<StyledInput
+					type="email"
+					value={updatedClient.email}
+					name="email"
+					onChange={handleOnChange}
+				/>
 			</label>
 			<label>
 				<StyledLabel>Date of Birth</StyledLabel>
-				<StyledInput type="date" />
+				<StyledInput
+					type="date"
+					value={updatedClient.dateOfBirth}
+					name="dateOfBirth"
+					onChange={handleOnChange}
+				/>
 			</label>
 			<label>
 				<StyledLabel>Status</StyledLabel>
-				<StyledSelect name="status">
+				<StyledSelect
+					name="status"
+					value={updatedClient.status}
+					onChange={handleOnChange}
+				>
 					<option value="Active">Active</option>
 					<option value="Pending">Pending</option>
 					<option value="Blocked">Blocked</option>
 				</StyledSelect>
 			</label>
 			<ButtonsContainer>
-				<Button variant="save" onClick={onSave} style={{ marginRight: "10px" }}>
+				<Button
+					variant="save"
+					onClick={handleOnSave}
+					style={{ marginRight: "10px" }}
+				>
 					Save
 				</Button>
 				<Button variant="cancel" onClick={onCancel}>
