@@ -2,11 +2,16 @@ import { styled } from "styled-components";
 import { up } from "styled-breakpoints";
 import { IconSortAscendingLetters } from "@tabler/icons-react";
 import React from "react";
-import { HandleOnFilterArgs } from "../App";
+import Input from "./Input";
 
 interface FiltersProps {
 	onFilter: ({ email, statusFilter }: HandleOnFilterArgs) => void;
 	onSort: () => void;
+}
+
+export interface HandleOnFilterArgs {
+	email: string;
+	statusFilter: "Active" | "Pending" | "Blocked" | "All";
 }
 
 export default function Filters({ onFilter, onSort }: FiltersProps) {
@@ -15,19 +20,17 @@ export default function Filters({ onFilter, onSort }: FiltersProps) {
 		statusFilter: "All",
 	});
 
-	React.useEffect(() => {
-		onFilter(filters);
-	}, [filters.email, filters.statusFilter, onFilter, filters]);
-
 	const handleOnChange = (
 		e:
 			| React.ChangeEvent<HTMLInputElement>
 			| React.ChangeEvent<HTMLSelectElement>
 	) => {
-		setFilters({
+		const newFilters = {
 			...filters,
 			[e.target.name]: e.target.value,
-		});
+		};
+		setFilters(newFilters);
+		onFilter(newFilters);
 	};
 
 	return (
@@ -39,13 +42,21 @@ export default function Filters({ onFilter, onSort }: FiltersProps) {
 				name="email"
 				title="Filter by email"
 			/>
-			<StyledSelect name="statusFilter" onChange={handleOnChange} title="Filter by status">
+			<StyledSelect
+				name="statusFilter"
+				onChange={handleOnChange}
+				title="Filter by status"
+			>
 				<option value="All">All</option>
 				<option value="Active">Active</option>
 				<option value="Pending">Pending</option>
 				<option value="Blocked">Blocked</option>
 			</StyledSelect>
-			<IconButton onClick={onSort} type="button" title="Sort by name in alphabetical order">
+			<IconButton
+				onClick={onSort}
+				type="button"
+				title="Sort by name in alphabetical order"
+			>
 				<IconSortAscendingLetters width={25} height={25} />
 			</IconButton>
 		</FiltersContainer>
@@ -66,14 +77,9 @@ const FiltersContainer = styled.div`
 	}
 `;
 
-const StyledInput = styled.input`
-	height: 32px;
+const StyledInput = styled(Input)`
 	width: 55%;
-	font-size: 16px;
-	outline: none;
 	padding: 5px 10px;
-	border-radius: 5px;
-	border: 1px solid #011627;
 
 	${up("md")} {
 		width: 70%;

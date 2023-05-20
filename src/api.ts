@@ -1,7 +1,14 @@
-import { Client, Clients, clientWithoutId } from "./types/Client"
+import { Client, Clients, ClientWithoutId } from "./types/Client"
 import { v1 as UUID } from 'uuid';
 
 const clients: Clients = [
+  {
+    id: UUID(),
+    name: "Charlotte",
+    dateOfBirth: "1998-11-03",
+    email: "charlotte@email.com",
+    status: "Blocked",
+  },
   {
     id: UUID(),
     name: "Alina",
@@ -11,17 +18,17 @@ const clients: Clients = [
   },
   {
     id: UUID(),
+    name: "Dominic",
+    dateOfBirth: "1996-05-11",
+    email: "dominic@email.com",
+    status: "Active",
+  },
+  {
+    id: UUID(),
     name: "Benedict",
     dateOfBirth: "1968-05-23",
     email: "benedict@email.com",
     status: "Pending",
-  },
-  {
-    id: UUID(),
-    name: "Charlotte",
-    dateOfBirth: "1998-11-03",
-    email: "charlotte@email.com",
-    status: "Blocked",
   },
 ]
 
@@ -33,7 +40,7 @@ export const getClients = (): Client[] => {
   else return []
 }
 
-export const addClient = (client: clientWithoutId) => {
+export const addClient = (client: ClientWithoutId) => {
   const newClient = { ...client, id: UUID() }
   const clients = getClients()
   const updatedClients = clients.concat(newClient)

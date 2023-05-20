@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
 import Button from "./Button";
-import { Client, clientWithoutId } from "../types/Client";
+import { Client, ClientWithoutId } from "../types/Client";
 import React from "react";
+import Input from "./Input";
 
 interface ClientFormProps {
 	client?: Client;
-	onSave: (partialClient: clientWithoutId) => void;
+	onSave: (partialClient: ClientWithoutId) => void;
 	onCancel: () => void;
 }
 
@@ -14,7 +15,7 @@ export default function ClientForm({
 	onSave,
 	onCancel,
 }: ClientFormProps) {
-	const [updatedClient, setUpdatedClient] = React.useState<clientWithoutId>({
+	const [updatedClient, setUpdatedClient] = React.useState<ClientWithoutId>({
 		name: client?.name || "",
 		email: client?.email || "",
 		dateOfBirth: client?.dateOfBirth || "",
@@ -113,14 +114,9 @@ const StyledLabel = styled.span`
 	margin-bottom: 3px;
 `;
 
-const StyledInput = styled.input`
-	font-size: 16px;
+const StyledInput = styled(Input)`
 	margin-bottom: 10px;
-	width: 100%;
-	outline: none;
 	padding: 5px 10px;
-	border-radius: 5px;
-	border: 1px solid #011627;
 `;
 
 const StyledSelect = styled.select`

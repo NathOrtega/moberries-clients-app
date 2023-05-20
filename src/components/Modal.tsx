@@ -6,13 +6,13 @@ import { up } from "styled-breakpoints";
 interface ModalProps {
 	isOpen: boolean;
 	children: React.ReactNode;
-	containerElementId: string;
+	containerElementId?: string;
 	onClose: () => void;
 }
 
 export default function Modal({
 	children,
-	containerElementId,
+	containerElementId = "modal",
 	isOpen,
 	onClose,
 }: ModalProps) {

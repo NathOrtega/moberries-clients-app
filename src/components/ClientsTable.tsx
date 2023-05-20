@@ -84,7 +84,7 @@ export default function ClientsTable({
 					))}
 				</tbody>
 			</StyledTable>
-			<Modal containerElementId="modal" isOpen={isModalOpen} onClose={onCancel}>
+			<Modal isOpen={isModalOpen} onClose={onCancel}>
 				{currentClient && (
 					<ClientForm
 						client={currentClient}

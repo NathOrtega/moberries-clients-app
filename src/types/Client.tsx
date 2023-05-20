@@ -8,4 +8,4 @@ export interface Client {
 
 export type Clients = Client[]
 
-export type clientWithoutId = Omit<Client, 'id'>
+export type ClientWithoutId = Omit<Client, 'id'>
