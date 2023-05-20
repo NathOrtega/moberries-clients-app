@@ -45,6 +45,7 @@ export default function ClientForm({
 					value={updatedClient.name}
 					onChange={handleOnChange}
 					name="name"
+					placeholder="John Doe"
 				/>
 			</label>
 			<label>
@@ -54,6 +55,7 @@ export default function ClientForm({
 					value={updatedClient.email}
 					name="email"
 					onChange={handleOnChange}
+					placeholder="example@email.com"
 				/>
 			</label>
 			<label>

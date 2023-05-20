@@ -1,36 +1,69 @@
 import Header from "./components/Header";
 import ClientsTable from "./components/ClientsTable";
-import Navbar from "./components/Navbar";
+import Filters from "./components/Filters";
 import { editClient, getClients, removeClient } from "./api";
 import { Client, Clients } from "./types/Client";
 import React from "react";
 
+export interface HandleOnFilterArgs {
+	email: string;
+	statusFilter: "Active" | "Pending" | "Blocked" | "All";
+}
+
 function App() {
-	const [clients, setClients] = React.useState<Clients>([])
+	const [clients, setClients] = React.useState<Clients>([]);
+	const [filteredClients, setFilteredClients] = React.useState<Clients>([]);
 
 	const reload = () => {
-		setClients(getClients())
-	}
+		const response = getClients()
+		setClients(response);
+		setFilteredClients(response);
+	};
 
 	React.useEffect(() => {
-		reload()
-	}, [])
+		reload();
+	}, []);
 
 	const handleOnEdit = (client: Client) => {
-		editClient(client)
-		reload()
-	}
+		editClient(client);
+		reload();
+	};
 
 	const handleOnRemove = (client: Client) => {
-		removeClient(client)
-		reload()
-	}
+		removeClient(client);
+		reload();
+	};
+
+	const handleOnFilter = React.useCallback(({ email, statusFilter }: HandleOnFilterArgs) => {
+		const filteredClients = clients.filter((client) => {
+			const emailMatches =
+				email === ""
+					? true
+					: client.email.toLowerCase().includes(email.toLowerCase());
+
+			const statusMatches = statusFilter === "All" ? true : client.status === statusFilter;
+
+			return emailMatches && statusMatches;
+		});
+		setFilteredClients(filteredClients);
+	}, [clients]);
+
+	const handleOnSort = React.useCallback(() => {
+		const sortedClients = [...filteredClients].sort((clientA, clientB) => {
+			return clientA.name.localeCompare(clientB.name)
+		})
+		setFilteredClients(sortedClients)
+	}, [filteredClients])
 
 	return (
 		<>
 			<Header />
-			<Navbar />
-			<ClientsTable clients={clients} handleOnEdit={handleOnEdit} handleOnRemove={handleOnRemove}/>
+			<Filters onFilter={handleOnFilter} onSort={handleOnSort}/>
+			<ClientsTable
+				clients={filteredClients}
+				handleOnEdit={handleOnEdit}
+				handleOnRemove={handleOnRemove}
+			/>
 		</>
 	);
 }
