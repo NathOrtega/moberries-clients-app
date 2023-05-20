@@ -142,7 +142,7 @@ const StyledTable = styled.table`
 
 	${up("md")} {
 		width: 764px;
-		margin: 30px auto 50px;
+		margin: 30px auto 30px;
 		flex-direction: column;
 	}
 `;

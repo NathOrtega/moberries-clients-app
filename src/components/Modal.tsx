@@ -10,10 +10,6 @@ interface ModalProps {
 	onClose: () => void;
 }
 
-interface StyledModalContainerProps {
-	readonly $isOpen: boolean;
-}
-
 export default function Modal({
 	children,
 	containerElementId,
@@ -29,17 +25,15 @@ export default function Modal({
 	}, [isOpen]);
 
 	return ReactDOM.createPortal(
-		<StyledModalContainer $isOpen={isOpen}>
-			<StyledOverlay onClick={onClose} />
-			<StyledModal>{children}</StyledModal>
-		</StyledModalContainer>,
+		isOpen && (
+			<>
+				<StyledOverlay onClick={onClose} />
+				<StyledModal>{children}</StyledModal>
+			</>
+			),
 		document.getElementById(containerElementId) as HTMLElement
 	);
 }
-
-const StyledModalContainer = styled.div<StyledModalContainerProps>`
-	display: ${(props) => (props.$isOpen ? "block" : "none")};
-`;
 
 const StyledOverlay = styled.div`
 	width: 100%;

@@ -36,6 +36,16 @@ export default function ClientForm({
 		});
 	};
 
+	const handleOnCancel = () => {
+		setUpdatedClient({
+			name: "",
+			email: "",
+			dateOfBirth: "",
+			status: "Pending"
+		})
+		onCancel()
+	}
+
 	return (
 		<form>
 			<label>
@@ -87,7 +97,7 @@ export default function ClientForm({
 				>
 					Save
 				</Button>
-				<Button variant="cancel" onClick={onCancel}>
+				<Button variant="cancel" onClick={handleOnCancel}>
 					Cancel
 				</Button>
 			</ButtonsContainer>
