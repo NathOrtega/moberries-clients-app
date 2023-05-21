@@ -32,7 +32,7 @@ const clients: Clients = [
   },
 ]
 
-localStorage.setItem("clients", JSON.stringify(clients))
+if (!localStorage.getItem("clients")) localStorage.setItem("clients", JSON.stringify(clients))
 
 export const getClients = (): Client[] => {
   const clients = localStorage.getItem("clients")
