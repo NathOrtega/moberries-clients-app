@@ -52,7 +52,7 @@ const StyledModal = styled.div`
 	left: 50%;
 	transform: translateX(-50%);
 	border-radius: 6px;
-	padding: 20px;
+	padding: 10px 20px 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;

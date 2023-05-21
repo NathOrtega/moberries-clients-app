@@ -10,6 +10,22 @@ interface ClientFormProps {
 	onCancel: () => void;
 }
 
+interface Errors {
+	name: string;
+	email: string;
+	dateOfBirth: string;
+}
+
+interface ErrorProps {
+	readonly $isVisible?: boolean;
+}
+
+type ChangeEvent =
+	| React.ChangeEvent<HTMLInputElement>
+	| React.ChangeEvent<HTMLSelectElement>;
+
+const VALID_EMAIL_REGEX = /^[\w.-]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,})+$/;
+
 export default function ClientForm({
 	client,
 	onSave,
@@ -22,19 +38,39 @@ export default function ClientForm({
 		status: client?.status || "Pending",
 	});
 
+	const [errors, setErrors] = React.useState<Partial<Errors>>({
+		name: "",
+		email: "",
+		dateOfBirth: "",
+	});
+
 	const handleOnSave = () => {
 		onSave(updatedClient);
 	};
 
-	const handleOnChange = (
-		e:
-			| React.ChangeEvent<HTMLInputElement>
-			| React.ChangeEvent<HTMLSelectElement>
-	) => {
-		setUpdatedClient({
-			...updatedClient,
-			[e.target.name]: e.target.value,
-		});
+	const handleOnChange = (e: ChangeEvent) => {
+		const { name: fieldName, value } = e.target;
+		switch (fieldName) {
+			case "name":
+				setErrors({ ...errors, name: !value.trim() ? "Name is required" : "" });
+				break;
+			case "email": {
+				let emailError = "";
+				if (!value) emailError = "Email is required";
+				else if (!value.match(VALID_EMAIL_REGEX))
+					emailError = "Invalid email format";
+				setErrors({ ...errors, email: emailError });
+				break;
+			}
+			case "dateOfBirth":
+				setErrors({
+					...errors,
+					dateOfBirth: !value ? "Date of Birth is required" : "",
+				});
+				break;
+		}
+
+		setUpdatedClient({ ...updatedClient, [fieldName]: value });
 	};
 
 	const handleOnCancel = () => {
@@ -47,6 +83,10 @@ export default function ClientForm({
 		onCancel();
 	};
 
+	const hasErrors = Object.values(errors).some((e) => !!e);
+	const isFilled = Object.values(updatedClient).every((e) => !!e);
+	const isFormValid = !hasErrors && isFilled;
+
 	return (
 		<form>
 			<label>
@@ -58,6 +98,7 @@ export default function ClientForm({
 					name="name"
 					placeholder="John Doe"
 				/>
+				<Error $isVisible={!!errors.name}>{errors.name}</Error>
 			</label>
 			<label>
 				<StyledLabel>Email</StyledLabel>
@@ -68,6 +109,7 @@ export default function ClientForm({
 					onChange={handleOnChange}
 					placeholder="example@email.com"
 				/>
+				<Error $isVisible={!!errors.email}>{errors.email}</Error>
 			</label>
 			<label>
 				<StyledLabel>Date of Birth</StyledLabel>
@@ -77,6 +119,7 @@ export default function ClientForm({
 					name="dateOfBirth"
 					onChange={handleOnChange}
 				/>
+				<Error $isVisible={!!errors.dateOfBirth}>{errors.dateOfBirth}</Error>
 			</label>
 			<label>
 				<StyledLabel>Status</StyledLabel>
@@ -95,6 +138,7 @@ export default function ClientForm({
 					variant="save"
 					onClick={handleOnSave}
 					style={{ marginRight: "10px" }}
+					disabled={!isFormValid}
 				>
 					Save
 				</Button>
@@ -106,16 +150,23 @@ export default function ClientForm({
 	);
 }
 
+const Error = styled.span<ErrorProps>`
+	font-size: 12px;
+	min-height: 12px;
+	display: block;
+	color: #dd1843;
+	visibility: ${(props) => (props.$isVisible ? "visible" : "hidden")};
+`;
+
 const StyledLabel = styled.span`
 	font-weight: 600;
 	color: #011627;
 	font-size: 16px;
+	margin: 10px 0 3px;
 	display: block;
-	margin-bottom: 3px;
 `;
 
 const StyledInput = styled(Input)`
-	margin-bottom: 10px;
 	padding: 5px 10px;
 `;
 
