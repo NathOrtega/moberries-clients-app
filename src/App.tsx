@@ -10,10 +10,25 @@ import { up } from "styled-breakpoints";
 import ClientForm from "./components/ClientForm";
 import Modal from "./components/Modal";
 
+interface ListStatus {
+	isSorted: boolean;
+	filteredBy: {
+			email: string;
+			status: "All" | "Active" | "Pending" | "Blocked";
+	};
+}
+
 function App() {
 	const [clients, setClients] = React.useState<Clients>([]);
 	const [filteredClients, setFilteredClients] = React.useState<Clients>([]);
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const [listStatus, setListStatus] = React.useState<ListStatus>({
+		isSorted: false,
+		filteredBy: {
+			email: "",
+			status: "All"
+		}
+	});
 
 	const refreshList = () => {
 		const response = getClients();
@@ -45,11 +60,19 @@ function App() {
 		return [...clients].sort((clientA, clientB) => {
 			return clientA.name.localeCompare(clientB.name);
 		});
-	}
+	};
 
 	const handleOnSort = () => {
-		const sortedClients = sortClients(filteredClients)
-		setFilteredClients(sortedClients);
+		if (!listStatus.isSorted) {
+			const sortedClients = sortClients(filteredClients);
+			setFilteredClients(sortedClients);
+			setListStatus({...listStatus, isSorted: true})
+		} else {
+			const email = listStatus.filteredBy.email
+			const statusFilter = listStatus.filteredBy.status
+			handleOnFilter({email, statusFilter})
+			setListStatus({...listStatus, isSorted: false})
+		}
 	};
 
 	const handleOnFilter = ({ email, statusFilter }: HandleOnFilterArgs) => {
@@ -64,8 +87,14 @@ function App() {
 
 			return emailMatches && statusMatches;
 		});
-		const sortedAndFilteredClients = sortClients(filteredClients)
-		setFilteredClients(sortedAndFilteredClients);
+		setFilteredClients(filteredClients);
+		setListStatus({
+			...listStatus,
+			filteredBy: {
+				email: email,
+				status: statusFilter
+			}
+		})
 	};
 
 	return (
