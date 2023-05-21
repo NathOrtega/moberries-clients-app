@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Button from "./Button";
 import { Client, ClientWithoutId } from "../types/Client";
 import React from "react";

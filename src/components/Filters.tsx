@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import { up } from "styled-breakpoints";
 import { IconSortAscendingLetters } from "@tabler/icons-react";
 import React from "react";

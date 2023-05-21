@@ -1,5 +1,5 @@
 import { Client, Clients } from "../types/Client";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import { IconEdit } from "@tabler/icons-react";
 import { IconTrash } from "@tabler/icons-react";
 import { up } from "styled-breakpoints";
