@@ -30,6 +30,7 @@ export default function ClientForm({
 	client,
 	onSave,
 	onCancel,
+	...rest
 }: ClientFormProps) {
 	const [updatedClient, setUpdatedClient] = React.useState<ClientWithoutId>({
 		name: client?.name || "",
@@ -88,7 +89,7 @@ export default function ClientForm({
 	const isFormValid = !hasErrors && isFilled;
 
 	return (
-		<form>
+		<form {...rest}>
 			<label>
 				<StyledLabel>Name</StyledLabel>
 				<StyledInput
@@ -97,8 +98,9 @@ export default function ClientForm({
 					onChange={handleOnChange}
 					name="name"
 					placeholder="John Doe"
+					data-cy="nameInput"
 				/>
-				<Error $isVisible={!!errors.name}>{errors.name}</Error>
+				<Error $isVisible={!!errors.name} data-cy="nameError">{errors.name}</Error>
 			</label>
 			<label>
 				<StyledLabel>Email</StyledLabel>
@@ -108,8 +110,9 @@ export default function ClientForm({
 					name="email"
 					onChange={handleOnChange}
 					placeholder="example@email.com"
+					data-cy="emailInput"
 				/>
-				<Error $isVisible={!!errors.email}>{errors.email}</Error>
+				<Error $isVisible={!!errors.email} data-cy="emailError">{errors.email}</Error>
 			</label>
 			<label>
 				<StyledLabel>Date of Birth</StyledLabel>
@@ -118,8 +121,9 @@ export default function ClientForm({
 					value={updatedClient.dateOfBirth}
 					name="dateOfBirth"
 					onChange={handleOnChange}
+					data-cy="dateOfBirthInput"
 				/>
-				<Error $isVisible={!!errors.dateOfBirth}>{errors.dateOfBirth}</Error>
+				<Error $isVisible={!!errors.dateOfBirth} data-cy="dateOfBirthError">{errors.dateOfBirth}</Error>
 			</label>
 			<label>
 				<StyledLabel>Status</StyledLabel>
@@ -127,6 +131,7 @@ export default function ClientForm({
 					name="status"
 					value={updatedClient.status}
 					onChange={handleOnChange}
+					data-cy="statusSelect"
 				>
 					<option value="Active">Active</option>
 					<option value="Pending">Pending</option>
@@ -139,10 +144,11 @@ export default function ClientForm({
 					onClick={handleOnSave}
 					style={{ marginRight: "10px" }}
 					disabled={!isFormValid}
+					data-cy="saveClient"
 				>
 					Save
 				</Button>
-				<Button variant="cancel" onClick={handleOnCancel}>
+				<Button variant="cancel" onClick={handleOnCancel} data-cy="cancelCreate">
 					Cancel
 				</Button>
 			</ButtonsContainer>

@@ -23,6 +23,7 @@ export default function ClientsTable({
 	clients,
 	handleOnEdit,
 	handleOnRemove,
+	...rest
 }: ClientsTableProps) {
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
 	const [currentClient, setCurrentClient] = React.useState<Client>();
@@ -47,7 +48,7 @@ export default function ClientsTable({
 
 	return (
 		<>
-			<StyledTable>
+			<StyledTable {...rest}>
 				<StyledTableHead>
 					<TableRow>
 						<StyledTableHeader $width="150px">Name</StyledTableHeader>
@@ -59,8 +60,8 @@ export default function ClientsTable({
 				</StyledTableHead>
 				<tbody style={{ width: "100%" }}>
 					{clients.map((client, index) => (
-						<TableRow key={index}>
-							<StyledTableData width="150px">
+						<TableRow key={index} data-cy={`tableRow-${client.email}`}>
+							<StyledTableData width="150px" data-cy="clientName">
 								<Label>Name</Label> {client.name}
 							</StyledTableData>
 							<StyledTableData width="150px">
@@ -73,10 +74,10 @@ export default function ClientsTable({
 								<Label>Status</Label> {client.status}
 							</StyledTableData>
 							<StyledTableData $hasIcons>
-								<StyledButton onClick={() => onEdit(client)}>
+								<StyledButton onClick={() => onEdit(client)} data-cy={`editButton-${client.email}`}>
 									<IconEdit />
 								</StyledButton>
-								<StyledButton onClick={() => handleOnRemove(client)}>
+								<StyledButton onClick={() => handleOnRemove(client)} data-cy={`deleteButton-${client.email}`}>
 									<IconTrash />
 								</StyledButton>
 							</StyledTableData>
@@ -84,7 +85,7 @@ export default function ClientsTable({
 					))}
 				</tbody>
 			</StyledTable>
-			<Modal isOpen={isModalOpen} onClose={onCancel}>
+			<Modal isOpen={isModalOpen} onClose={onCancel} data-cy="editClientModal">
 				{currentClient && (
 					<ClientForm
 						client={currentClient}
@@ -92,6 +93,7 @@ export default function ClientsTable({
 							onSave({ id: currentClient.id, ...partialClient })
 						}
 						onCancel={onCancel}
+						data-cy="editForm"
 					/>
 				)}
 			</Modal>

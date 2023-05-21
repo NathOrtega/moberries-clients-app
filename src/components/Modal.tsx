@@ -15,6 +15,7 @@ export default function Modal({
 	containerElementId = "modal",
 	isOpen,
 	onClose,
+	...rest
 }: ModalProps) {
 	React.useEffect(() => {
 		if (isOpen) {
@@ -26,10 +27,10 @@ export default function Modal({
 
 	return ReactDOM.createPortal(
 		isOpen && (
-			<>
-				<StyledOverlay onClick={onClose} />
+			<div {...rest}>
+				<StyledOverlay onClick={onClose}/>
 				<StyledModal>{children}</StyledModal>
-			</>
+			</div>
 		),
 		document.getElementById(containerElementId) as HTMLElement
 	);

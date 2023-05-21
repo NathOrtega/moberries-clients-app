@@ -14,7 +14,7 @@ export interface HandleOnFilterArgs {
 	statusFilter: "Active" | "Pending" | "Blocked" | "All";
 }
 
-export default function Filters({ onFilter, onSort }: FiltersProps) {
+export default function Filters({ onFilter, onSort, ...rest }: FiltersProps) {
 	const [filters, setFilters] = React.useState<HandleOnFilterArgs>({
 		email: "",
 		statusFilter: "All",
@@ -34,18 +34,20 @@ export default function Filters({ onFilter, onSort }: FiltersProps) {
 	};
 
 	return (
-		<FiltersContainer>
+		<FiltersContainer {...rest}>
 			<StyledInput
 				type="email"
 				placeholder="Search by email"
 				onChange={handleOnChange}
 				name="email"
 				title="Filter by email"
+				data-cy="filterInput"
 			/>
 			<StyledSelect
 				name="statusFilter"
 				onChange={handleOnChange}
 				title="Filter by status"
+				data-cy="statusFilter"
 			>
 				<option value="All">All</option>
 				<option value="Active">Active</option>
@@ -56,6 +58,7 @@ export default function Filters({ onFilter, onSort }: FiltersProps) {
 				onClick={onSort}
 				type="button"
 				title="Sort by name in alphabetical order"
+				data-cy="sort"
 			>
 				<IconSortAscendingLetters width={25} height={25} />
 			</IconButton>

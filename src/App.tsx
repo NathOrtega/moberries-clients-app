@@ -101,7 +101,7 @@ function App() {
 		<>
 			<Header />
 			<ButtonContainer>
-				<StyledButton variant="save" onClick={() => setIsModalOpen(true)}>
+				<StyledButton variant="save" onClick={() => setIsModalOpen(true)} data-cy="createButton">
 					Create
 				</StyledButton>
 			</ButtonContainer>
@@ -110,11 +110,13 @@ function App() {
 				clients={filteredClients}
 				handleOnEdit={handleOnEdit}
 				handleOnRemove={handleOnRemove}
+				data-cy="clientsTable"
 			/>
-			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} data-cy="createClientModal">
 				<ClientForm
 					onSave={handleOnCreate}
 					onCancel={() => setIsModalOpen(false)}
+					data-cy="createForm"
 				/>
 			</Modal>
 		</>
